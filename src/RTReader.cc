@@ -43,13 +43,10 @@ Reader::Reader(const fs::path &input_file):
     _event = 0;
     _tree->SetBranchAddress("event", &_event);
     _events_in_tree = _tree->GetEntries();
-
-    cout << "File has " << _events_in_tree << " events stored" << endl;
 }
 
 Reader::~Reader()
 {
-    cout << "Read " << _events_read << " events" << endl;
 }
 
 bool Reader::good() const

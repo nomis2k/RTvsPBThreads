@@ -5,7 +5,6 @@
  * Copyright 2011, All rights reserved
  */
 
-#include <iostream>
 #include <string>
 
 #include <google/protobuf/stubs/common.h>
@@ -45,8 +44,6 @@ Writer::~Writer()
     _raw_out.reset();
 
     _output.close();
-
-    cout << "Wrote " << _events_written << " events" << endl;
 }
 
 bool Writer::write(const Event &event)

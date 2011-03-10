@@ -38,8 +38,6 @@ Writer::Writer(const fs::path &output_file):
 Writer::~Writer()
 {
     _output->Write();
-
-    cout << "Wrote " << _events_written << " events" << endl;
 }
 
 bool Writer::write(const Event &event)

@@ -7,7 +7,6 @@
 
 #include <math.h>
 
-#include <iostream>
 #include <string>
 
 #include <google/protobuf/stubs/common.h>
@@ -33,13 +32,10 @@ Reader::Reader(const fs::path &input_file):
     //
     _coded_in->SetTotalBytesLimit(pow(1024,3), 900*pow(1024,2));
     _coded_in->ReadLittleEndian32(&_events_stored);
-
-    cout << "File has " << _events_stored << " events stored" << endl;
 }
 
 Reader::~Reader()
 {
-    cout << "Read " << _events_read << " events" << endl;
 }
 
 bool Reader::good() const
