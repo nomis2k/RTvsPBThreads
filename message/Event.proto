@@ -1,0 +1,22 @@
+// Very simple Event with several jets. Each Jet is identified with
+// Lorentz Vector
+//
+package pb;
+
+message LorentzVector
+{
+    required double e = 1;
+    required double px = 2;
+    required double py = 3;
+    required double pz = 4;
+}
+
+message Jet
+{
+    required LorentzVector p4 = 1;
+}
+
+message Event
+{
+    repeated Jet jets = 1;
+}
