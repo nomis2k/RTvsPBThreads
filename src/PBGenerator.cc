@@ -11,16 +11,22 @@
 #include "interface/PBWriter.h"
 #include "pb/Event.pb.h"
 
-pb::Generator::Generator(const fs::path &file)
+pb::Generator::Generator()
 {
     _randomizer.reset(new TRandom3());
     _randomizer->SetSeed(time(0));
+}
 
+void pb::Generator::init(const fs::path &file)
+{
     _writer.reset(new Writer(file));
 }
 
 void pb::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
 {
+    if (!_writer)
+        return;
+
     Event event;
 
     for(uint32_t i = 0; events > i; ++i)

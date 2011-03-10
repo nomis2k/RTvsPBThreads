@@ -11,16 +11,22 @@
 #include "interface/RTGenerator.h"
 #include "interface/RTWriter.h"
 
-rt::Generator::Generator(const fs::path &file)
+rt::Generator::Generator()
 {
     _randomizer.reset(new TRandom3());
     _randomizer->SetSeed(time(0));
+}
 
+void rt::Generator::init(const fs::path &file)
+{
     _writer.reset(new Writer(file));
 }
 
 void rt::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
 {
+    if (!_writer)
+        return;
+
     for(uint32_t i = 0; events > i; ++i)
     {
         Event event;

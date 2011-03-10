@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -21,39 +22,43 @@ using boost::lexical_cast;
 
 void printUsage(const string &);
 
+uint32_t MAX_FILES = 10;
 uint32_t MAX_EVENTS = 10000;
 uint32_t MAX_JETS = 10;
 
 int main(int argc, char *argv[])
 try
 {
-    if (2 > argc)
+    if (1 > argc)
     {
         printUsage(argv[0]);
 
         return 1;
     }
 
-    fs::path file_path(argv[1]);
-    const string extension(fs::extension(file_path));
+    string format(argv[1]);
+    boost::to_lower(format);
 
     if (2 < argc)
-        ::MAX_EVENTS = lexical_cast<uint32_t>(argv[2]);
+        ::MAX_FILES = lexical_cast<uint32_t>(argv[2]);
+
+    if (3 < argc)
+        ::MAX_EVENTS = lexical_cast<uint32_t>(argv[3]);
 
     try
     {
         boost::shared_ptr<Generator> generator;
-        if (".pb" == extension)
+        if ("pb" == format)
         {
             cout << "Generate ProtoBuf" << endl;
 
-            generator.reset(new pb::Generator(file_path));
+            generator.reset(new pb::Generator());
         }
-        else if (".root" == extension)
+        else if ("root" == format)
         {
             cout << "Generate ROOT Tree" << endl;
 
-            generator.reset(new rt::Generator(file_path));
+            generator.reset(new rt::Generator());
         }
         else
         {
@@ -62,7 +67,14 @@ try
             return 1;
         }
 
-        generator->generateEvents(::MAX_EVENTS, ::MAX_JETS);
+        for(uint32_t file_id = 1; ::MAX_FILES >= file_id; ++file_id)
+        {
+            ostringstream file_name;
+            file_name << "data_" << file_id << "." << format;
+            fs::path file_path(file_name.str());
+            generator->init(file_path);
+            generator->generateEvents(::MAX_EVENTS, ::MAX_JETS);
+        }
     }
     catch(const exception &error)
     {
@@ -80,11 +92,12 @@ catch(...)
 
 void printUsage(const string &executable)
 {
-    cout << "Usage: " << executable << " output_file [events]" << endl;
+    cout << "Usage: " << executable << " format [files] [events]" << endl;
     cout << endl;
-    cout << "Output format will be selected depending on the exension:"
-        << endl;
-    cout << "  pb     ProtoBuf" << endl;
-    cout << "  root   TTree" << endl;
+    cout << " format  ROOT or PB" << endl;
+    cout << " files   Number of files to generate [default: "
+        << ::MAX_FILES << "]" << endl;
+    cout << " events  Number of events to generated in each file [default: "
+       << ::MAX_EVENTS << "]" << endl;
     cout << endl;
 }

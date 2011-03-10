@@ -8,12 +8,9 @@
 #ifndef ROOT_GENERATOR_H
 #define ROOT_GENERATOR_H
 
-#include <boost/filesystem.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "interface/Generator.h"
-
-namespace fs = boost::filesystem;
 
 class TRandom;
 
@@ -24,8 +21,9 @@ namespace rt
     class Generator : public ::Generator
     {
         public:
-            Generator(const fs::path &file);
+            Generator();
 
+            virtual void init(const fs::path &file);
             virtual void generateEvents(const uint32_t &events,
                                         const uint32_t &jets);
 
