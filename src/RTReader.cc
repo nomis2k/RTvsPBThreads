@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 
+#include <TBranch.h>
 #include <TFile.h>
 #include <TTree.h>
 
@@ -39,11 +40,8 @@ Reader::Reader(const fs::path &input_file):
         _input.reset();
     }
 
-    _event.reset(new Event());
-
-    Event *event = _event.get();
-    _tree->SetBranchAddress("event", &event);
-
+    _event = 0;
+    _tree->SetBranchAddress("event", &_event);
     _events_in_tree = _tree->GetEntries();
 
     cout << "File has " << _events_in_tree << " events stored" << endl;
@@ -64,14 +62,14 @@ bool Reader::read(Event *event)
     if (!good())
         return false;
 
-    if (!_tree->GetEvent(_events_read))
+    if (1 > _tree->GetEntry(_events_read, 1))
     {
         _tree = 0;
 
         return false;
     }
 
-    event = _event.get();
+    event = _event;
 
     ++_events_read;
 

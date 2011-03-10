@@ -32,11 +32,10 @@ namespace rt
 
         private:
             typedef boost::shared_ptr<TFile> TFilePtr;
-            typedef boost::shared_ptr<Event> EventPtr;
 
             TFilePtr _input;
             TTree *_tree;
-            EventPtr _event;
+            Event *_event;
 
             bool _is_good;
             uint32_t _events_in_tree;
