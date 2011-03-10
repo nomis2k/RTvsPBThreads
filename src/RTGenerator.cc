@@ -47,4 +47,6 @@ void rt::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
 
         _writer->write(event);
     }
+
+    _writer.reset();
 }

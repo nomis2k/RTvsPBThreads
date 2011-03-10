@@ -48,4 +48,6 @@ void pb::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
 
         event.Clear();
     }
+
+    _writer.reset();
 }
