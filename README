@@ -1,0 +1,37 @@
+INTRODUCTION
+============
+
+    Performance measurement of the large set of data writen/read in/from files
+    using:
+
+        - ROOT TTree
+            http://root.cern.ch/root/html/TTree.html
+
+        - Google ProtoBuf
+            http://code.google.com/p/protobuf/
+
+
+
+PROCEDURE
+=========
+
+    The same number of files is generated in both cases with same amount of
+    random data. Data are written to output in one or the other format.
+
+    ROOT framework (root.cern.ch) does not work in multi-threaded application
+    and therefore reading of ROOT files is done in sequential mode (1-by-1).
+
+    Google ProtoBuf may analyze files either in sequential or multi-threaded
+    mode.
+
+
+
+TASK
+====
+
+    The aim of this project is to measure the performance of data reading
+    procedure in a number of setups:
+
+        1. sequential ROOT vs sequential Google ProtoBuf
+
+        2. sequential ROOT vs multi-threaded Google ProtoBuf
