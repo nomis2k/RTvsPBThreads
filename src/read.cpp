@@ -22,39 +22,48 @@ void printUsage(const string &);
 int main(int argc, char *argv[])
 try
 {
-    if (2 != argc)
+    if (2 > argc)
     {
         printUsage(argv[0]);
 
         return 1;
     }
 
-    fs::path file_path(argv[1]);
-    const string extension(fs::extension(file_path));
-
     try
     {
+
         boost::shared_ptr<Processor> processor;
-        if (".pb" == extension)
         {
-            cout << "Read ProtoBuf" << endl;
+            fs::path file_path(argv[1]);
+            const string extension(fs::extension(file_path));
 
-            processor.reset(new pb::Processor(file_path));
+            if (".pb" == extension)
+            {
+                cout << "Read ProtoBuf" << endl;
+
+                processor.reset(new pb::Processor());
+            }
+            else if (".root" == extension)
+            {
+                cout << "Read ROOT Tree" << endl;
+
+                processor.reset(new rt::Processor());
+            }
+            else
+            {
+                printUsage(argv[0]);
+
+                return 1;
+            }
         }
-        else if (".root" == extension)
+
+        for(int arg = 1; argc > arg; ++arg)
         {
-            cout << "Read ROOT Tree" << endl;
+            fs::path file_path(argv[arg]);
 
-            processor.reset(new rt::Processor(file_path));
+            processor->init(file_path);
+            processor->processEvents();
         }
-        else
-        {
-            printUsage(argv[0]);
-
-            return 1;
-        }
-
-        processor->processEvents();
     }
     catch(const exception &error)
     {
@@ -72,11 +81,8 @@ catch(...)
 
 void printUsage(const string &executable)
 {
-    cout << "Usage: " << executable << " input_file" << endl;
+    cout << "Usage: " << executable << " inputs" << endl;
     cout << endl;
-    cout << "Input file format will be selected depending on the exension:"
-        << endl;
-    cout << "  pb     ProtoBuf" << endl;
-    cout << "  root   TTree" << endl;
+    cout << "Inputs should be space separated" << endl;
     cout << endl;
 }

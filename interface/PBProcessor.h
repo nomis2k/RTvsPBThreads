@@ -8,12 +8,9 @@
 #ifndef PROTOBUF_PROCESSOR_H
 #define PROTOBUF_PROCESSOR_H
 
-#include <boost/filesystem.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "interface/Processor.h"
-
-namespace fs = boost::filesystem;
 
 namespace pb
 {
@@ -22,8 +19,9 @@ namespace pb
     class Processor : public ::Processor
     {
         public:
-            Processor(const fs::path &file);
+            Processor();
 
+            virtual void init(const fs::path &file);
             virtual void processEvents();
 
         private:

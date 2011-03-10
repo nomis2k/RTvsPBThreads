@@ -9,15 +9,24 @@
 #include "interface/RTProcessor.h"
 #include "interface/RTReader.h"
 
-rt::Processor::Processor(const fs::path &file)
+rt::Processor::Processor()
+{
+}
+
+void rt::Processor::init(const fs::path &file)
 {
     _reader.reset(new Reader(file));
 }
 
 void rt::Processor::processEvents()
 {
+    if (!_reader)
+        return;
+
     Event *event = 0;
 
     while(_reader->good())
         _reader->read(event);
+
+    _reader.reset();
 }

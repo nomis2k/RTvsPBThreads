@@ -9,15 +9,24 @@
 #include "interface/PBReader.h"
 #include "pb/Event.pb.h"
 
-pb::Processor::Processor(const fs::path &file)
+pb::Processor::Processor()
+{
+}
+
+void pb::Processor::init(const fs::path &file)
 {
     _reader.reset(new Reader(file));
 }
 
 void pb::Processor::processEvents()
 {
+    if (!_reader)
+        return;
+
     Event event;
 
     while(_reader->good())
         _reader->read(event);
+
+    _reader.reset();
 }

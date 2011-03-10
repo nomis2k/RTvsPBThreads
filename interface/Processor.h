@@ -8,11 +8,16 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
 
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
+
 class Processor
 {
     public:
         virtual ~Processor() {}
 
+        virtual void init(const fs::path &file) = 0;
         virtual void processEvents() = 0;
 };
 
