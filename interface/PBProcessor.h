@@ -24,8 +24,14 @@ namespace pb
             virtual void init(const fs::path &file);
             virtual void processEvents();
 
+            virtual uint32_t eventsRead();
+            virtual uint32_t eventsReadInLastFile();
+
         private:
             boost::shared_ptr<Reader> _reader;
+
+            uint32_t _events_read;
+            uint32_t _events_read_in_last_file;
     };
 }
 

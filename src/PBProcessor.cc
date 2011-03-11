@@ -9,13 +9,16 @@
 #include "interface/PBReader.h"
 #include "pb/Event.pb.h"
 
-pb::Processor::Processor()
+pb::Processor::Processor():
+    _events_read(0),
+    _events_read_in_last_file(0)
 {
 }
 
 void pb::Processor::init(const fs::path &file)
 {
     _reader.reset(new Reader(file));
+    _events_read_in_last_file = 0;
 }
 
 void pb::Processor::processEvents()
@@ -28,5 +31,18 @@ void pb::Processor::processEvents()
     while(_reader->good())
         _reader->read(event);
 
+    _events_read_in_last_file = _reader->eventsRead();
+    _events_read += _events_read_in_last_file;
+
     _reader.reset();
+}
+
+uint32_t pb::Processor::eventsRead()
+{
+    return _events_read;
+}
+
+uint32_t pb::Processor::eventsReadInLastFile()
+{
+    return _events_read_in_last_file;
 }

@@ -54,6 +54,11 @@ bool Reader::good() const
     return _tree && _events_read < _events_in_tree;
 }
 
+uint32_t Reader::eventsRead() const
+{
+    return _events_read;
+}
+
 bool Reader::read(Event *event)
 {
     if (!good())

@@ -43,6 +43,11 @@ bool Reader::good() const
     return _is_good;
 }
 
+uint32_t Reader::eventsRead() const
+{
+    return _events_read;
+}
+
 bool Reader::read(Event &event)
 {
     if (!good())

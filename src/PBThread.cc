@@ -14,6 +14,7 @@ pb::Thread::Thread(Instructor *instructor):
 {
     _instructor = instructor;
     _condition.reset(new Condition());
+    _processor.reset(new Processor());
 }
 
 bool pb::Thread::start()
@@ -50,7 +51,6 @@ void pb::Thread::init(const fs::path &file)
 {
     Lock lock(*_condition->mutex());
 
-    _processor.reset(new Processor());
     _processor->init(file);
     _wait_for_instructions = false;
 }

@@ -26,6 +26,7 @@ namespace pb
             ~Reader();
 
             bool good() const;
+            uint32_t eventsRead() const;
 
             bool read(Event &);
 
