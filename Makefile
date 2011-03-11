@@ -18,7 +18,7 @@ PROTOCOBJS = $(subst ./message/,./obj/,$(patsubst %.proto,%.o,$(PROTOCS)))
 
 CINTS      = $(foreach dic,$(addprefix ./dic/,$(patsubst %.h,%.cxx,$(notdir $(DICS)))),$(subst LinkDef,Dict,$(dic)))
 CINTOBJS   = $(foreach obj,$(subst ./dic/,,$(patsubst %.cxx,%.o,$(CINTS))),$(addprefix ./obj/,$(obj)))
-CINTHEADS  = $(filter-out %Processor.h,$(filter-out %Reader.h,$(filter-out %Generator.h,$(filter-out %Writer.h,$(wildcard ./interface/RT*.h)))))
+CINTHEADS  = interface/RTEvent.h interface/RTJet.h
 
 # List of programs with main functions to be filtered out of objects
 PROGS    = $(patsubst ./src/%.cpp,%,$(wildcard ./src/*.cpp))
@@ -31,7 +31,7 @@ else
 endif
 
 CXXFLAGS = ${DEBUG} -pipe -Wall -I./  -I/opt/local/include/ -I${BOOST_ROOT}/include -I${ROOTSYS}/include
-LIBS     = -L/opt/local/lib -lprotobuf -lboost_filesystem -lboost_system
+LIBS     = -L/opt/local/lib -lprotobuf -lboost_filesystem -lboost_system -lboost_thread-mt
 LDFLAGS  = -shared -W1 `root-config --libs`
 
 # Rules to be always executed: empty ones
