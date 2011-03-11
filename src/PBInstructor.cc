@@ -172,6 +172,8 @@ void pb::Instructor::stopThread()
     //
     thread->join();
 
+    cout << "Thread read " << thread->eventsRead() << " events" << endl;
+
     --_running_threads;
 }
 

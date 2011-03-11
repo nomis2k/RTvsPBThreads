@@ -20,8 +20,8 @@ class Processor
         virtual void init(const fs::path &file) = 0;
         virtual void processEvents() = 0;
 
-        virtual uint32_t eventsRead() = 0;
-        virtual uint32_t eventsReadInLastFile() = 0;
+        virtual uint32_t eventsRead() const = 0;
+        virtual uint32_t eventsReadInLastFile() const = 0;
 };
 
 #endif

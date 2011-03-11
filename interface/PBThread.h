@@ -38,6 +38,8 @@ namespace pb
             //
             void init(const fs::path &file);
 
+            uint32_t eventsRead() const;
+
         private:
             // Processing loop
             //
@@ -60,6 +62,7 @@ namespace pb
 
             Instructor *_instructor;
             bool _wait_for_instructions;
+            bool _continue;
 
             boost::shared_ptr<Processor> _processor;
     };

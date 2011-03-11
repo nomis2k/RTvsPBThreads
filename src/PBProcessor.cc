@@ -37,12 +37,12 @@ void pb::Processor::processEvents()
     _reader.reset();
 }
 
-uint32_t pb::Processor::eventsRead()
+uint32_t pb::Processor::eventsRead() const
 {
     return _events_read;
 }
 
-uint32_t pb::Processor::eventsReadInLastFile()
+uint32_t pb::Processor::eventsReadInLastFile() const
 {
     return _events_read_in_last_file;
 }

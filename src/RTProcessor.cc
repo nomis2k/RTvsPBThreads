@@ -37,12 +37,12 @@ void rt::Processor::processEvents()
     _reader.reset();
 }
 
-uint32_t rt::Processor::eventsRead()
+uint32_t rt::Processor::eventsRead() const
 {
     return _events_read;
 }
 
-uint32_t rt::Processor::eventsReadInLastFile()
+uint32_t rt::Processor::eventsReadInLastFile() const
 {
     return _events_read_in_last_file;
 }

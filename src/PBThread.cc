@@ -10,7 +10,8 @@
 #include "interface/PBThread.h"
 
 pb::Thread::Thread(Instructor *instructor):
-    _wait_for_instructions(false)
+    _wait_for_instructions(false),
+    _continue(false)
 {
     _instructor = instructor;
     _condition.reset(new Condition());
@@ -33,7 +34,7 @@ void pb::Thread::stop()
 {
     Lock lock(*_condition->mutex());
 
-    _processor.reset();
+    _continue = false;
     _wait_for_instructions = false;
 }
 
@@ -52,7 +53,15 @@ void pb::Thread::init(const fs::path &file)
     Lock lock(*_condition->mutex());
 
     _processor->init(file);
+    _continue = true;
     _wait_for_instructions = false;
+}
+
+uint32_t pb::Thread::eventsRead() const
+{
+    Lock lock(*_condition->mutex());
+
+    return _processor->eventsRead();
 }
 
 
@@ -65,7 +74,7 @@ void pb::Thread::loop()
     // thread will quit
     //
     for(_wait_for_instructions = true;
-        _processor;
+        _continue;
         _wait_for_instructions = true)
     {
         // Process instructions
@@ -86,7 +95,6 @@ void pb::Thread::loop()
 void pb::Thread::process()
 {
     _processor->processEvents();
-    _processor.reset();
 }
 
 void pb::Thread::notify()
