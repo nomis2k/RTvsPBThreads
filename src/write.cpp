@@ -29,7 +29,7 @@ uint32_t MAX_JETS = 10;
 int main(int argc, char *argv[])
 try
 {
-    if (1 > argc)
+    if (2 > argc)
     {
         printUsage(argv[0]);
 
