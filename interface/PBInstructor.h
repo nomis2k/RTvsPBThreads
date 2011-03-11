@@ -25,7 +25,7 @@ namespace pb
             typedef ::Thread::ConditionPtr ConditionPtr;
             typedef ::Thread::Lock Lock;
 
-            Instructor();
+            Instructor(const uint32_t &max_threads = 0);
 
             void processFiles(const Files &files);
 
@@ -69,6 +69,7 @@ namespace pb
             typedef std::vector<ThreadPtr> Threads;
             typedef std::queue<Thread *> ThreadsFIFO;
 
+            int _max_threads;
             Threads _threads;
             ThreadsFIFO _complete_threads;
             int _running_threads;

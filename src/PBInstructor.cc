@@ -19,11 +19,15 @@ namespace fs = boost::filesystem;
 
 using namespace std;
 
-pb::Instructor::Instructor():
+pb::Instructor::Instructor(const uint32_t &max_threads):
     _next_file(_input_files.begin()),
     _running_threads(0)
 {
     _condition.reset(new Condition());
+
+    _max_threads = max_threads
+        ? max_threads
+        : boost::thread::hardware_concurrency();
 }
 
 void pb::Instructor::processFiles(const Files &files)
@@ -90,12 +94,11 @@ void pb::Instructor::init()
 {
     Lock lock(*_condition->mutex());
 
-    const int cores = boost::thread::hardware_concurrency();
     const int input_files = _input_files.size();
 
-    for(int threads = (cores
-                        ? (cores < input_files
-                            ? cores
+    for(int threads = (_max_threads
+                        ? (_max_threads < input_files
+                            ? _max_threads
                             : input_files)
                         : 1);
         0 < threads;

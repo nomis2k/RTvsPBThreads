@@ -22,7 +22,7 @@ namespace po = boost::program_options;
 
 typedef vector<string> Inputs;
 
-bool MULTI_THREAD = false;
+uint32_t THREADS = 0;
 
 int main(int argc, char *argv[])
 try
@@ -31,8 +31,8 @@ try
     description.add_options()
         ("help", "produce help message")
 
-        ("multi-thread", po::value<bool>()->implicit_value(true),
-         "run multi-threads (works only with ProtoBuf)")
+        ("threads", po::value<uint32_t>(),
+         "run N multi-threads (works only with ProtoBuf)")
 
         ("input,i", po::value<Inputs>(), "input file(s)")
     ;
@@ -55,12 +55,29 @@ try
         return 1;
     }
 
-    if (arguments.count("multi-thread"))
-        ::MULTI_THREAD = true;
+    if (arguments.count("threads"))
+        ::THREADS = arguments["threads"].as<uint32_t>();
 
     try
     {
-        if (!::MULTI_THREAD)
+        if (::THREADS)
+        {
+            Inputs inputs(arguments["input"].as<Inputs>());
+            fs::path file_path(*inputs.begin());
+            const string extension(fs::extension(file_path));
+
+            if (".pb" != extension)
+            {
+                cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
+                cout << description << endl;
+
+                return 1;
+            }
+
+            boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor(::THREADS));
+            instructor->processFiles(inputs);
+        }
+        else
         {
             boost::shared_ptr<Processor> processor;
             {
@@ -101,23 +118,6 @@ try
 
             cout << "Processed events: "
                 << processor->eventsRead() << endl;
-        }
-        else
-        {
-            Inputs inputs(arguments["input"].as<Inputs>());
-            fs::path file_path(*inputs.begin());
-            const string extension(fs::extension(file_path));
-
-            if (".pb" != extension)
-            {
-                cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
-                cout << description << endl;
-
-                return 1;
-            }
-
-            boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor());
-            instructor->processFiles(inputs);
         }
     }
     catch(const exception &error)
