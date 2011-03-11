@@ -22,7 +22,7 @@ namespace po = boost::program_options;
 
 typedef vector<string> Inputs;
 
-uint32_t THREADS = 0;
+int THREADS = 0;
 
 int main(int argc, char *argv[])
 try
@@ -31,8 +31,8 @@ try
     description.add_options()
         ("help", "produce help message")
 
-        ("threads", po::value<uint32_t>(),
-         "run N multi-threads (works only with ProtoBuf)")
+        ("threads", po::value<int>(),
+         "run N multi-threads (works only with ProtoBuf) [-1 for cores]")
 
         ("input,i", po::value<Inputs>(), "input file(s)")
     ;
@@ -56,7 +56,7 @@ try
     }
 
     if (arguments.count("threads"))
-        ::THREADS = arguments["threads"].as<uint32_t>();
+        ::THREADS = arguments["threads"].as<int>();
 
     try
     {
@@ -74,7 +74,7 @@ try
                 return 1;
             }
 
-            boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor(::THREADS));
+            boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor(-1 == ::THREADS ? 0 : ::THREADS));
             instructor->processFiles(inputs);
         }
         else

@@ -39,4 +39,15 @@ then
     exit 1
 fi
 
+echo
+echo "READING (MULTITHREADS)"
+echo =====================
+echo
+
+time ./bin/read --threads -1 data*.pb
+if [[ 0 -ne $? ]]
+then
+    exit 1
+fi
+
 exit 0
