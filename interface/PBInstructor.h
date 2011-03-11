@@ -14,18 +14,14 @@
 #include <string>
 #include <vector>
 
-#include <boost/filesystem.hpp>
-
 #include "interface/PBThread.h"
-
-namespace fs = boost::filesystem;
 
 namespace pb
 {
     class Instructor
     {
         public:
-            typedef std::vector<fs::path> Files;
+            typedef std::vector<std::string> Files;
             typedef ::Thread::ConditionPtr ConditionPtr;
             typedef ::Thread::Lock Lock;
 

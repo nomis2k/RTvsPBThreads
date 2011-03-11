@@ -11,6 +11,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
+#include "interface/PBInstructor.h"
 #include "interface/PBProcessor.h"
 #include "interface/RTProcessor.h"
 
@@ -29,7 +30,10 @@ try
     po::options_description description("Allowed options");
     description.add_options()
         ("help", "produce help message")
-        ("multi-thread", po::value<bool>()->implicit_value(true))
+
+        ("multi-thread", po::value<bool>()->implicit_value(true),
+         "run multi-threads (works only with ProtoBuf)")
+
         ("input,i", po::value<Inputs>(), "input file(s)")
     ;
 
@@ -51,47 +55,66 @@ try
         return 1;
     }
 
-    if (arguments.count("multi_thread"))
+    if (arguments.count("multi-thread"))
         ::MULTI_THREAD = true;
 
     try
     {
-
-        boost::shared_ptr<Processor> processor;
+        if (!::MULTI_THREAD)
         {
-            fs::path file_path(argv[1]);
+            boost::shared_ptr<Processor> processor;
+            {
+                fs::path file_path(argv[1]);
+                const string extension(fs::extension(file_path));
+
+                if (".pb" == extension)
+                {
+                    cout << "Read ProtoBuf" << endl;
+
+                    processor.reset(new pb::Processor());
+                }
+                else if (".root" == extension)
+                {
+                    cout << "Read ROOT Tree" << endl;
+
+                    processor.reset(new rt::Processor());
+                }
+                else
+                {
+                    cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
+                    cout << description << endl;
+
+                    return 1;
+                }
+            }
+
+            Inputs inputs(arguments["input"].as<Inputs>());
+            for(Inputs::const_iterator input = inputs.begin();
+                inputs.end() != input;
+                ++input)
+            {
+                fs::path file_path(*input);
+
+                processor->init(file_path);
+                processor->processEvents();
+            }
+        }
+        else
+        {
+            Inputs inputs(arguments["input"].as<Inputs>());
+            fs::path file_path(*inputs.begin());
             const string extension(fs::extension(file_path));
 
-            if (".pb" == extension)
-            {
-                cout << "Read ProtoBuf" << endl;
-
-                processor.reset(new pb::Processor());
-            }
-            else if (".root" == extension)
-            {
-                cout << "Read ROOT Tree" << endl;
-
-                processor.reset(new rt::Processor());
-            }
-            else
+            if (".pb" != extension)
             {
                 cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
                 cout << description << endl;
 
                 return 1;
             }
-        }
 
-        Inputs inputs(arguments["input"].as<Inputs>());
-        for(Inputs::const_iterator input = inputs.begin();
-            inputs.end() != input;
-            ++input)
-        {
-            fs::path file_path(*input);
-
-            processor->init(file_path);
-            processor->processEvents();
+            boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor());
+            instructor->processFiles(inputs);
         }
     }
     catch(const exception &error)

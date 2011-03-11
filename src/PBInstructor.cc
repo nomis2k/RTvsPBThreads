@@ -7,9 +7,17 @@
  * Copyright 2011, All rights reserved
  */
 
+#include <iostream>
+
+#include <boost/filesystem.hpp>
+
 #include "interface/Condition.h"
 #include "interface/PBInstructor.h"
 #include "interface/PBThread.h"
+
+namespace fs = boost::filesystem;
+
+using namespace std;
 
 pb::Instructor::Instructor():
     _next_file(_input_files.begin()),
@@ -20,6 +28,7 @@ pb::Instructor::Instructor():
 
 void pb::Instructor::processFiles(const Files &files)
 {
+    cout << "process files" << endl;
     // Do nothing if there are already running threads or there is nothing to do
     //
     {
@@ -60,14 +69,18 @@ void pb::Instructor::notify(Thread *thread)
 //
 void pb::Instructor::process()
 {
+    cout << "init threads" << endl;
+
     // Create Threads
     //
     init();
 
+    cout << "start threads" << endl;
     // Start Threads
     //
     start();
 
+    cout << "run threads" << endl;
     // Run Threads
     //
     loop();
@@ -104,7 +117,7 @@ void pb::Instructor::start()
     {
         Thread *thread = thread_iter->get();
 
-        thread->init(*_next_file);
+        thread->init(fs::path(*_next_file));
 
         if (!thread->start())
             continue;
