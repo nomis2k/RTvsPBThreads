@@ -97,11 +97,10 @@ try
 
                 processor->init(file_path);
                 processor->processEvents();
-
-                cout << "Processed events: "
-                    << processor->eventsReadInLastFile()
-                    << " total: " << processor->eventsRead() << endl;
             }
+
+            cout << "Processed events: "
+                << processor->eventsRead() << endl;
         }
         else
         {
