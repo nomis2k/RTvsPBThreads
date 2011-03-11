@@ -31,7 +31,7 @@ else
 endif
 
 CXXFLAGS = ${DEBUG} -pipe -Wall -I./  -I/opt/local/include/ -I${BOOST_ROOT}/include -I${ROOTSYS}/include
-LIBS     = -L/opt/local/lib -lprotobuf -lboost_filesystem -lboost_system -lboost_thread-mt
+LIBS     = -L/opt/local/lib -lprotobuf -lboost_filesystem -lboost_system -lboost_thread-mt -lboost_program_options
 LDFLAGS  = -shared -W1 `root-config --libs`
 
 # Rules to be always executed: empty ones

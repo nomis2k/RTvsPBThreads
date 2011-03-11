@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 #include "interface/PBProcessor.h"
 #include "interface/RTProcessor.h"
@@ -16,18 +17,42 @@
 using namespace std;
 
 namespace fs = boost::filesystem;
+namespace po = boost::program_options;
 
-void printUsage(const string &);
+typedef vector<string> Inputs;
+
+bool MULTI_THREAD = false;
 
 int main(int argc, char *argv[])
 try
 {
-    if (2 > argc)
+    po::options_description description("Allowed options");
+    description.add_options()
+        ("help", "produce help message")
+        ("multi-thread", po::value<bool>()->implicit_value(true))
+        ("input,i", po::value<Inputs>(), "input file(s)")
+    ;
+
+    po::positional_options_description positional_options;
+    positional_options.add("input", -1);
+
+    po::variables_map arguments;
+    po::store(po::command_line_parser(argc, argv).
+            options(description).positional(positional_options).run(),
+            arguments);
+
+    if (2 > argc ||
+        arguments.count("help") ||
+        !arguments.count("input"))
     {
-        printUsage(argv[0]);
+        cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
+        cout << description << endl;
 
         return 1;
     }
+
+    if (arguments.count("multi_thread"))
+        ::MULTI_THREAD = true;
 
     try
     {
@@ -51,15 +76,19 @@ try
             }
             else
             {
-                printUsage(argv[0]);
+                cout << "Usage: " << argv[0] << " [Options] input(s)" << endl;
+                cout << description << endl;
 
                 return 1;
             }
         }
 
-        for(int arg = 1; argc > arg; ++arg)
+        Inputs inputs(arguments["input"].as<Inputs>());
+        for(Inputs::const_iterator input = inputs.begin();
+            inputs.end() != input;
+            ++input)
         {
-            fs::path file_path(argv[arg]);
+            fs::path file_path(*input);
 
             processor->init(file_path);
             processor->processEvents();
@@ -77,12 +106,4 @@ try
 catch(...)
 {
     cerr << "Unknown error" << endl;
-}
-
-void printUsage(const string &executable)
-{
-    cout << "Usage: " << executable << " inputs" << endl;
-    cout << endl;
-    cout << "Inputs should be space separated" << endl;
-    cout << endl;
 }
