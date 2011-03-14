@@ -121,8 +121,6 @@ void pb::Thread::notify()
 
 void pb::Thread::wait()
 {
-    _out->print(_thread_id, "wait");
-
     Lock lock(*_condition->mutex());
 
     while(_wait_for_instructions)
@@ -130,6 +128,4 @@ void pb::Thread::wait()
         _instructor->condition()->variable()->notify_all();
         _condition->variable()->wait(lock);
     }
-
-    _out->print(_thread_id, "awake");
 }
