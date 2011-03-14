@@ -22,7 +22,15 @@ echo WRITING
 echo =======
 echo
 
-time ./bin/write pb $files $events && echo ---===---  && time ./bin/write root $files $events
+time ./bin/write pb $files $events
+if [[ 0 -ne $? ]]
+then
+    exit 1
+fi
+
+echo ---===---
+
+time ./bin/write root $files $events
 if [[ 0 -ne $? ]]
 then
     exit 1
@@ -33,7 +41,15 @@ echo READING
 echo =======
 echo
 
-time ./bin/read data*.pb && echo ---===--- && time ./bin/read data*.root
+time ./bin/read data*.pb
+if [[ 0 -ne $? ]]
+then
+    exit 1
+fi
+
+echo ---===---
+
+time ./bin/read data*.root
 if [[ 0 -ne $? ]]
 then
     exit 1
