@@ -19,6 +19,8 @@ namespace pb
     class Results : public ::Results
     {
         public:
+            typedef boost::shared_ptr<H1> H1Ptr;
+            
             Results();
             virtual ~Results();
 
@@ -27,9 +29,11 @@ namespace pb
             virtual void print() const;
             virtual void save() const;
 
+            // Accessors
+            //
+            H1Ptr jets() const;
+
         private:
-            typedef boost::shared_ptr<H1> H1Ptr;
-            
             H1Ptr _jets;
     };
 }

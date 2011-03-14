@@ -49,3 +49,8 @@ void pb::Results::save() const
     h1 = _jets->convert("jets", "Number of jets");
     h1->Write();
 }
+
+pb::Results::H1Ptr pb::Results::jets() const
+{
+    return _jets;
+}

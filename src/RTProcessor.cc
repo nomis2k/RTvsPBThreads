@@ -10,13 +10,13 @@
 #include "interface/RTEvent.h"
 #include "interface/RTProcessor.h"
 #include "interface/RTReader.h"
+#include "interface/RTResults.h"
 
 rt::Processor::Processor():
     _events_read(0),
     _events_read_in_last_file(0)
 {
-    _jets.reset(new TH1I("njets", "Number of Jets", 20, 0, 20));
-    _jets->SetDirectory(0);
+    _results.reset(new Results());
 }
 
 void rt::Processor::init(const fs::path &file)
@@ -39,13 +39,18 @@ void rt::Processor::processEvents()
         if (!event)
             continue;
 
-        _jets->Fill(event->jets().size());
+        _results->jets()->Fill(event->jets().size());
     }
 
     _events_read_in_last_file = _reader->eventsRead();
     _events_read += _events_read_in_last_file;
 
     _reader.reset();
+}
+
+rt::Processor::ResultsPtr rt::Processor::results() const
+{
+    return _results;
 }
 
 uint32_t rt::Processor::eventsRead() const

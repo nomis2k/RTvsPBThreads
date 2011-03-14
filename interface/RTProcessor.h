@@ -17,14 +17,19 @@ class TH1;
 namespace rt
 {
     class Reader;
+    class Results;
 
     class Processor : public ::Processor
     {
         public:
+            typedef ::Processor::ResultsPtr ResultsPtr;
+
             Processor();
 
             virtual void init(const fs::path &file);
             virtual void processEvents();
+
+            virtual ResultsPtr results() const;
 
             virtual uint32_t eventsRead() const;
             virtual uint32_t eventsReadInLastFile() const;
@@ -35,7 +40,7 @@ namespace rt
             uint32_t _events_read;
             uint32_t _events_read_in_last_file;
 
-            boost::shared_ptr<TH1> _jets;
+            boost::shared_ptr<Results> _results;
     };
 }
 

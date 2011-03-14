@@ -8,13 +8,14 @@
 #include "interface/H1.h"
 #include "interface/PBProcessor.h"
 #include "interface/PBReader.h"
+#include "interface/PBResults.h"
 #include "pb/Event.pb.h"
 
 pb::Processor::Processor():
     _events_read(0),
     _events_read_in_last_file(0)
 {
-    _jets.reset(new H1(20, 0, 20));
+    _results.reset(new Results());
 }
 
 void pb::Processor::init(const fs::path &file)
@@ -34,13 +35,18 @@ void pb::Processor::processEvents()
     {
         _reader->read(event);
 
-        _jets->fill(event.jets_size());
+        _results->jets()->fill(event.jets_size());
     }
 
     _events_read_in_last_file = _reader->eventsRead();
     _events_read += _events_read_in_last_file;
 
     _reader.reset();
+}
+
+pb::Processor::ResultsPtr pb::Processor::results() const
+{
+    return _results;
 }
 
 uint32_t pb::Processor::eventsRead() const

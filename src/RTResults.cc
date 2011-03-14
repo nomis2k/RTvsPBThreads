@@ -46,3 +46,8 @@ void rt::Results::save() const
 {
     _jets->Write();
 }
+
+rt::Results::TH1Ptr rt::Results::jets() const
+{
+    return _jets;
+}
