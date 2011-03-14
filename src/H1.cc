@@ -8,6 +8,8 @@
 #include <iomanip>
 #include <iostream>
 
+#include <TH1D.h>
+
 #include "interface/Axis.h"
 #include "interface/H1.h"
 
@@ -70,6 +72,24 @@ void H1::print(std::ostream &out) const
 
     for(uint32_t bin = 0, bins = _axis->bins() + 2; bins > bin; ++bin)
         out << "[" << setw(3) << bin << "]: " << *(_data.get() + bin) << endl;
+}
+
+H1::TH1Ptr H1::convert(const string &name, const string &title) const
+{
+    TH1Ptr h1(new TH1D(name.c_str(), title.c_str(),
+                       _axis->bins(), _axis->min(), _axis->max()));
+    h1->SetDirectory(0);
+
+    for(uint32_t bin = 0, bins = _axis->bins() + 2; bins > bin; ++bin)
+        h1->SetBinContent(bin, *(_data.get() + bin));
+
+    return h1;
+}
+
+void H1::add(const H1 &source)
+{
+    for(uint32_t bin = 0, bins = _axis->bins() + 2; bins > bin; ++bin)
+        *(_data.get() + bin) += *(source._data.get() + bin);
 }
 
 

@@ -9,15 +9,19 @@
 #define H1_H
 
 #include <iosfwd>
+#include <string>
 
 #include <boost/shared_array.hpp>
 #include <boost/shared_ptr.hpp>
 
 class Axis;
+class TH1;
 
 class H1
 {
     public:
+        typedef boost::shared_ptr<TH1> TH1Ptr;
+
         H1(const uint32_t &bins, const double &min, const double &max);
         ~H1();
 
@@ -26,6 +30,11 @@ class H1
 
         void fill(const double &, const double &weight = 1);
         void print(std::ostream &) const;
+
+        TH1Ptr convert(const std::string &name,
+                       const std::string &title) const;
+
+        void add(const H1 &);
 
     private:
         // Temporarily prevent copying

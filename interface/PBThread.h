@@ -13,6 +13,7 @@
 #include <boost/thread.hpp>
 
 #include "interface/Condition.h"
+#include "interface/Results.h"
 #include "interface/Thread.h"
 
 namespace fs = boost::filesystem;
@@ -25,6 +26,8 @@ namespace pb
     class Thread : public ::Thread
     {
         public:
+            typedef boost::shared_ptr<Results> ResultsPtr;
+
             Thread(Instructor *instructor);
 
             // Thread interface
@@ -39,6 +42,7 @@ namespace pb
             void init(const fs::path &file);
 
             uint32_t eventsRead() const;
+            ResultsPtr results() const;
 
         private:
             // Processing loop
