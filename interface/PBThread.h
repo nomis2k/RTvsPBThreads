@@ -13,10 +13,11 @@
 #include <boost/thread.hpp>
 
 #include "interface/Condition.h"
-#include "interface/Results.h"
 #include "interface/Thread.h"
 
 namespace fs = boost::filesystem;
+
+class Results;
 
 namespace pb
 {
@@ -42,6 +43,7 @@ namespace pb
             void init(const fs::path &file);
 
             uint32_t eventsRead() const;
+
             ResultsPtr results() const;
 
         private:

@@ -16,6 +16,7 @@
 #include "interface/PBInstructor.h"
 #include "interface/PBProcessor.h"
 #include "interface/RTProcessor.h"
+#include "interface/Results.h"
 
 using namespace std;
 
@@ -78,6 +79,16 @@ try
 
             boost::shared_ptr<pb::Instructor> instructor(new pb::Instructor(-1 == ::THREADS ? 0 : ::THREADS));
             instructor->processFiles(inputs);
+
+            boost::shared_ptr<TFile> output(new TFile("out_pb_threads.root", "recreate"));
+            if (!output->IsOpen())
+            {
+                cerr << "Failed to save results" << endl;
+
+                return 1;
+            }
+
+            instructor->results()->save();
         }
         else
         {

@@ -16,6 +16,8 @@
 
 #include "interface/PBThread.h"
 
+class Results;
+
 namespace pb
 {
     class Instructor
@@ -24,6 +26,7 @@ namespace pb
             typedef std::vector<std::string> Files;
             typedef ::Thread::ConditionPtr ConditionPtr;
             typedef ::Thread::Lock Lock;
+            typedef boost::shared_ptr<Results> ResultsPtr;
 
             Instructor(const uint32_t &max_threads = 0);
 
@@ -34,6 +37,8 @@ namespace pb
             ConditionPtr condition() const;
 
             void notify(Thread *thread);
+
+            ResultsPtr results() const;
 
         private:
             void process();
@@ -77,6 +82,8 @@ namespace pb
             // Instructor Mutex
             //
             ConditionPtr _condition; 
+
+            ResultsPtr _results;
     };
 }
 

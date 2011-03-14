@@ -8,6 +8,7 @@
 #include "interface/PBInstructor.h"
 #include "interface/PBProcessor.h"
 #include "interface/PBThread.h"
+#include "interface/Results.h"
 
 pb::Thread::Thread(Instructor *instructor):
     _wait_for_instructions(false),
@@ -62,6 +63,11 @@ uint32_t pb::Thread::eventsRead() const
     Lock lock(*_condition->mutex());
 
     return _processor->eventsRead();
+}
+
+pb::Thread::ResultsPtr pb::Thread::results() const
+{
+    return _processor->results();
 }
 
 

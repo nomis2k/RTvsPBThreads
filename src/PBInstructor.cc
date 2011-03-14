@@ -14,6 +14,7 @@
 #include "interface/Condition.h"
 #include "interface/PBInstructor.h"
 #include "interface/PBThread.h"
+#include "interface/PBResults.h"
 
 namespace fs = boost::filesystem;
 
@@ -28,6 +29,8 @@ pb::Instructor::Instructor(const uint32_t &max_threads):
     _max_threads = max_threads
         ? max_threads
         : boost::thread::hardware_concurrency();
+
+    _results.reset(new Results());
 }
 
 void pb::Instructor::processFiles(const Files &files)
@@ -64,6 +67,11 @@ void pb::Instructor::notify(Thread *thread)
     Lock lock(*_condition->mutex());
 
     _complete_threads.push(thread);
+}
+
+pb::Instructor::ResultsPtr pb::Instructor::results() const
+{
+    return _results;
 }
 
 
@@ -171,6 +179,8 @@ void pb::Instructor::stopThread()
     thread->join();
 
     cout << "Thread read " << thread->eventsRead() << " events" << endl;
+
+    _results->add(*thread->results());
 
     --_running_threads;
 }
