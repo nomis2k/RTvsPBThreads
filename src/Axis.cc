@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#include <cmath>
-
 #include "interface/Axis.h"
 
 using namespace std;
@@ -66,7 +64,7 @@ uint32_t Axis::findBin(const double &x) const
     if (x > _max)
         return 1 + _bins;
 
-    return 1 + floor((x - _min) / _delta);
+    return 1 + static_cast<int>((x - _min) / _delta);
 }
 
 
