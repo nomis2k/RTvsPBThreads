@@ -12,8 +12,8 @@ then
     events=$2
 fi
 
-rm ./data*.pb
-rm ./data*.root
+rm ./data*.pb &> /dev/null
+rm ./data*.root &> /dev/null
 
 echo Generate $files files with $events events in each
 echo
