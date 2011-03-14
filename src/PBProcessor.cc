@@ -35,7 +35,18 @@ void pb::Processor::processEvents()
     {
         _reader->read(event);
 
-        _results->jets()->fill(event.jets_size());
+        const int number_of_jets = event.jets_size();
+        _results->jets()->fill(number_of_jets);
+
+        for(int i = 0; i < number_of_jets; ++i)
+        {
+            const Jet &jet = event.jets(i);
+
+            _results->jet_e()->fill(jet.p4().e());
+            _results->jet_px()->fill(jet.p4().px());
+            _results->jet_py()->fill(jet.p4().py());
+            _results->jet_pz()->fill(jet.p4().pz());
+        }
     }
 
     _events_read_in_last_file = _reader->eventsRead();

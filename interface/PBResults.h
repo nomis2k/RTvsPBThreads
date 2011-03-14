@@ -32,9 +32,17 @@ namespace pb
             // Accessors
             //
             H1Ptr jets() const;
+            H1Ptr jet_e() const;
+            H1Ptr jet_px() const;
+            H1Ptr jet_py() const;
+            H1Ptr jet_pz() const;
 
         private:
             H1Ptr _jets;
+            H1Ptr _jet_e;
+            H1Ptr _jet_px;
+            H1Ptr _jet_py;
+            H1Ptr _jet_pz;
     };
 }
 

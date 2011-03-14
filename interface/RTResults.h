@@ -32,9 +32,17 @@ namespace rt
             // Accessors
             //
             TH1Ptr jets() const;
+            TH1Ptr jet_e() const;
+            TH1Ptr jet_px() const;
+            TH1Ptr jet_py() const;
+            TH1Ptr jet_pz() const;
 
         private:
             TH1Ptr _jets;
+            TH1Ptr _jet_e;
+            TH1Ptr _jet_px;
+            TH1Ptr _jet_py;
+            TH1Ptr _jet_pz;
     };
 }
 

@@ -40,6 +40,16 @@ void rt::Processor::processEvents()
             continue;
 
         _results->jets()->Fill(event->jets().size());
+
+        for(Event::Jets::const_iterator jet = event->jets().begin();
+            event->jets().end() != jet;
+            ++jet)
+        {
+            _results->jet_e()->Fill(jet->p4().E());
+            _results->jet_px()->Fill(jet->p4().Px());
+            _results->jet_py()->Fill(jet->p4().Py());
+            _results->jet_pz()->Fill(jet->p4().Pz());
+        }
     }
 
     _events_read_in_last_file = _reader->eventsRead();
