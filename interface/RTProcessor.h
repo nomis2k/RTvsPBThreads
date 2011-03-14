@@ -12,6 +12,8 @@
 
 #include "interface/Processor.h"
 
+class TH1;
+
 namespace rt
 {
     class Reader;
@@ -32,6 +34,8 @@ namespace rt
 
             uint32_t _events_read;
             uint32_t _events_read_in_last_file;
+
+            boost::shared_ptr<TH1> _jets;
     };
 }
 
