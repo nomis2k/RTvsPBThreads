@@ -11,6 +11,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
+#include <TFile.h>
+
 #include "interface/PBInstructor.h"
 #include "interface/PBProcessor.h"
 #include "interface/RTProcessor.h"
@@ -80,6 +82,7 @@ try
         else
         {
             boost::shared_ptr<Processor> processor;
+            string results_file;
             {
                 fs::path file_path(argv[1]);
                 const string extension(fs::extension(file_path));
@@ -88,11 +91,15 @@ try
                 {
                     cout << "Read ProtoBuf" << endl;
 
+                    results_file = "out_pb";
+
                     processor.reset(new pb::Processor());
                 }
                 else if (".root" == extension)
                 {
                     cout << "Read ROOT Tree" << endl;
+
+                    results_file = "out_rt";
 
                     processor.reset(new rt::Processor());
                 }
@@ -118,6 +125,16 @@ try
 
             cout << "Processed events: "
                 << processor->eventsRead() << endl;
+
+            boost::shared_ptr<TFile> output(new TFile((results_file + ".root").c_str(), "recreate"));
+            if (!output->IsOpen())
+            {
+                cerr << "Failed to save results" << endl;
+
+                return 1;
+            }
+
+            processor->results()->save();
         }
     }
     catch(const exception &error)

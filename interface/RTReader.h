@@ -29,7 +29,7 @@ namespace rt
             bool good() const;
             uint32_t eventsRead() const;
 
-            bool read(Event *);
+            bool read(Event * &);
 
         private:
             typedef boost::shared_ptr<TFile> TFilePtr;

@@ -34,9 +34,9 @@ void rt::Processor::processEvents()
 
     while(_reader->good())
     {
-        _reader->read(event);
+        if (!_reader->read(event) ||
+            !event)
 
-        if (!event)
             continue;
 
         _results->jets()->Fill(event->jets().size());

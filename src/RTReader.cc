@@ -59,7 +59,7 @@ uint32_t Reader::eventsRead() const
     return _events_read;
 }
 
-bool Reader::read(Event *event)
+bool Reader::read(Event *&event)
 {
     if (!good())
         return false;
