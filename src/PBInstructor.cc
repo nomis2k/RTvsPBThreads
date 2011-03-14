@@ -12,6 +12,7 @@
 #include <boost/filesystem.hpp>
 
 #include "interface/Condition.h"
+#include "interface/Cout.h"
 #include "interface/PBInstructor.h"
 #include "interface/PBThread.h"
 #include "interface/PBResults.h"
@@ -31,6 +32,8 @@ pb::Instructor::Instructor(const uint32_t &max_threads):
         : boost::thread::hardware_concurrency();
 
     _results.reset(new Results());
+
+    _out.reset(new Cout());
 }
 
 void pb::Instructor::processFiles(const Files &files)
@@ -74,6 +77,11 @@ pb::Instructor::ResultsPtr pb::Instructor::results() const
     return _results;
 }
 
+pb::Instructor::CoutPtr pb::Instructor::out() const
+{
+    return _out;
+}
+
 
 
 // Private
@@ -108,6 +116,8 @@ void pb::Instructor::init()
         --threads)
     {
         ThreadPtr thread(new Thread(this));
+
+        thread->setId(threads);
 
         _threads.push_back(thread);
     }

@@ -26,6 +26,7 @@ namespace pb
             typedef std::vector<std::string> Files;
             typedef ::Thread::ConditionPtr ConditionPtr;
             typedef ::Thread::Lock Lock;
+            typedef Thread::CoutPtr CoutPtr;
             typedef boost::shared_ptr<Results> ResultsPtr;
 
             Instructor(const uint32_t &max_threads = 0);
@@ -39,6 +40,8 @@ namespace pb
             void notify(Thread *thread);
 
             ResultsPtr results() const;
+
+            CoutPtr out() const;
 
         private:
             void process();
@@ -84,6 +87,8 @@ namespace pb
             ConditionPtr _condition; 
 
             ResultsPtr _results;
+
+            CoutPtr _out;
     };
 }
 

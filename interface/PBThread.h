@@ -17,6 +17,7 @@
 
 namespace fs = boost::filesystem;
 
+class Cout;
 class Results;
 
 namespace pb
@@ -28,6 +29,7 @@ namespace pb
     {
         public:
             typedef boost::shared_ptr<Results> ResultsPtr;
+            typedef boost::shared_ptr<Cout> CoutPtr;
 
             Thread(Instructor *instructor);
 
@@ -45,6 +47,8 @@ namespace pb
             uint32_t eventsRead() const;
 
             ResultsPtr results() const;
+
+            void setId(const int &);
 
         private:
             // Processing loop
@@ -71,6 +75,10 @@ namespace pb
             bool _continue;
 
             boost::shared_ptr<Processor> _processor;
+
+            CoutPtr _out;
+
+            int _thread_id;
     };
 }
 

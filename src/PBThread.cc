@@ -5,6 +5,7 @@
  * Copyright 2011, All rights reserved
  */
 
+#include "interface/Cout.h"
 #include "interface/PBInstructor.h"
 #include "interface/PBProcessor.h"
 #include "interface/PBThread.h"
@@ -12,9 +13,12 @@
 
 pb::Thread::Thread(Instructor *instructor):
     _wait_for_instructions(false),
-    _continue(false)
+    _continue(false),
+    _thread_id(0)
 {
     _instructor = instructor;
+    _out = _instructor->out();
+
     _condition.reset(new Condition());
     _processor.reset(new Processor());
 }
@@ -56,6 +60,8 @@ void pb::Thread::init(const fs::path &file)
     _processor->init(file);
     _continue = true;
     _wait_for_instructions = false;
+
+    _out->print(_thread_id, file.string());
 }
 
 uint32_t pb::Thread::eventsRead() const
@@ -68,6 +74,11 @@ uint32_t pb::Thread::eventsRead() const
 pb::Thread::ResultsPtr pb::Thread::results() const
 {
     return _processor->results();
+}
+
+void pb::Thread::setId(const int &id)
+{
+    _thread_id = id;
 }
 
 
@@ -110,6 +121,8 @@ void pb::Thread::notify()
 
 void pb::Thread::wait()
 {
+    _out->print(_thread_id, "wait");
+
     Lock lock(*_condition->mutex());
 
     while(_wait_for_instructions)
@@ -117,4 +130,6 @@ void pb::Thread::wait()
         _instructor->condition()->variable()->notify_all();
         _condition->variable()->wait(lock);
     }
+
+    _out->print(_thread_id, "awake");
 }
