@@ -34,13 +34,13 @@ rt::Results::Results():
     _jet_pz.reset(new TH1D("jet_pz", "Jets pz", 50, 50, 150));
     _jet_pz->SetDirectory(0);
 
-    _jet_x.reset(new TH1D("jet_x", "Jets x", 10, -5, 5));
+    _jet_x.reset(new TH1D("jet_x", "Jets x", 20, -10, 10));
     _jet_x->SetDirectory(0);
 
-    _jet_y.reset(new TH1D("jet_y", "Jets y", 10, -5, 5));
+    _jet_y.reset(new TH1D("jet_y", "Jets y", 20, -10, 10));
     _jet_y->SetDirectory(0);
 
-    _jet_z.reset(new TH1D("jet_z", "Jets z", 10, -5, 5));
+    _jet_z.reset(new TH1D("jet_z", "Jets z", 20, -10, 10));
     _jet_z->SetDirectory(0);
 
     _muons.reset(new TH1D("muons", "Number of muons", 20, 0, 20));
@@ -58,13 +58,13 @@ rt::Results::Results():
     _muon_pz.reset(new TH1D("muon_pz", "Muons pz", 50, 0, 100));
     _muon_pz->SetDirectory(0);
 
-    _muon_x.reset(new TH1D("muon_x", "Muons x", 10, 0, 10));
+    _muon_x.reset(new TH1D("muon_x", "Muons x", 20, 0, 20));
     _muon_x->SetDirectory(0);
 
-    _muon_y.reset(new TH1D("muon_y", "Muons y", 10, 0, 10));
+    _muon_y.reset(new TH1D("muon_y", "Muons y", 20, 0, 20));
     _muon_y->SetDirectory(0);
 
-    _muon_z.reset(new TH1D("muon_z", "Muons z", 10, 0, 10));
+    _muon_z.reset(new TH1D("muon_z", "Muons z", 20, 0, 20));
     _muon_z->SetDirectory(0);
 }
 

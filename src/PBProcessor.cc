@@ -42,10 +42,30 @@ void pb::Processor::processEvents()
         {
             const Jet &jet = event.jets(i);
 
+            _results->jet_flavor()->fill(jet.flavor());
             _results->jet_e()->fill(jet.p4().e());
             _results->jet_px()->fill(jet.p4().px());
             _results->jet_py()->fill(jet.p4().py());
             _results->jet_pz()->fill(jet.p4().pz());
+            _results->jet_x()->fill(jet.vertex().x());
+            _results->jet_y()->fill(jet.vertex().y());
+            _results->jet_z()->fill(jet.vertex().z());
+        }
+
+        const int number_of_muons = event.muons_size();
+        _results->muons()->fill(number_of_muons);
+
+        for(int i = 0; i < number_of_muons; ++i)
+        {
+            const Lepton &muon = event.muons(i);
+
+            _results->muon_e()->fill(muon.p4().e());
+            _results->muon_px()->fill(muon.p4().px());
+            _results->muon_py()->fill(muon.p4().py());
+            _results->muon_pz()->fill(muon.p4().pz());
+            _results->muon_x()->fill(muon.vertex().x());
+            _results->muon_y()->fill(muon.vertex().y());
+            _results->muon_z()->fill(muon.vertex().z());
         }
     }
 
