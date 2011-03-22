@@ -22,7 +22,7 @@ rt::Results::Results():
     _jet_flavor.reset(new TH1D("jet_flavor", "Flavor of jets", 20, 0, 20));
     _jet_flavor->SetDirectory(0);
 
-    _jet_e.reset(new TH1D("jet_e", "Jets e", 100, 100, 300));
+    _jet_e.reset(new TH1D("jet_e", "Jets e", 10, 0, 10));
     _jet_e->SetDirectory(0);
 
     _jet_px.reset(new TH1D("jet_px", "Jets px", 50, 50, 150));
@@ -34,37 +34,37 @@ rt::Results::Results():
     _jet_pz.reset(new TH1D("jet_pz", "Jets pz", 50, 50, 150));
     _jet_pz->SetDirectory(0);
 
-    _jet_x.reset(new TH1D("jet_x", "Jets x", 50, 50, 150));
+    _jet_x.reset(new TH1D("jet_x", "Jets x", 10, -5, 5));
     _jet_x->SetDirectory(0);
 
-    _jet_y.reset(new TH1D("jet_y", "Jets y", 50, 50, 150));
+    _jet_y.reset(new TH1D("jet_y", "Jets y", 10, -5, 5));
     _jet_y->SetDirectory(0);
 
-    _jet_z.reset(new TH1D("jet_z", "Jets z", 50, 50, 150));
+    _jet_z.reset(new TH1D("jet_z", "Jets z", 10, -5, 5));
     _jet_z->SetDirectory(0);
 
     _muons.reset(new TH1D("muons", "Number of muons", 20, 0, 20));
     _muons->SetDirectory(0);
 
-    _muon_e.reset(new TH1D("muon_e", "Muons e", 100, 100, 300));
+    _muon_e.reset(new TH1D("muon_e", "Muons e", 50, 50, 150));
     _muon_e->SetDirectory(0);
 
-    _muon_px.reset(new TH1D("muon_px", "Muons px", 50, 50, 150));
+    _muon_px.reset(new TH1D("muon_px", "Muons px", 50, 0, 100));
     _muon_px->SetDirectory(0);
 
-    _muon_py.reset(new TH1D("muon_py", "Muons py", 50, 50, 150));
+    _muon_py.reset(new TH1D("muon_py", "Muons py", 50, 0, 100));
     _muon_py->SetDirectory(0);
 
-    _muon_pz.reset(new TH1D("muon_pz", "Muons pz", 50, 50, 150));
+    _muon_pz.reset(new TH1D("muon_pz", "Muons pz", 50, 0, 100));
     _muon_pz->SetDirectory(0);
 
-    _muon_x.reset(new TH1D("muon_x", "Muons x", 50, 50, 150));
+    _muon_x.reset(new TH1D("muon_x", "Muons x", 10, 0, 10));
     _muon_x->SetDirectory(0);
 
-    _muon_y.reset(new TH1D("muon_y", "Muons y", 50, 50, 150));
+    _muon_y.reset(new TH1D("muon_y", "Muons y", 10, 0, 10));
     _muon_y->SetDirectory(0);
 
-    _muon_z.reset(new TH1D("muon_z", "Muons z", 50, 50, 150));
+    _muon_z.reset(new TH1D("muon_z", "Muons z", 10, 0, 10));
     _muon_z->SetDirectory(0);
 }
 

@@ -40,10 +40,10 @@ void pb::Generator::generateEvents(const uint32_t &events,
             Jet *jet = event.add_jets();
             LorentzVector *p4 = jet->mutable_p4();
 
-            p4->set_e(_randomizer->Gaus(45, 5));
+            p4->set_e(_randomizer->Gaus(172, 10));
             p4->set_px(_randomizer->Gaus(45, 5));
             p4->set_py(_randomizer->Gaus(45, 5));
-            p4->set_pz(_randomizer->Gaus(172, 10));
+            p4->set_pz(_randomizer->Gaus(45, 5));
 
             Vertex *vertex = jet->mutable_vertex();
 

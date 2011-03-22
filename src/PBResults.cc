@@ -20,21 +20,21 @@ pb::Results::Results():
     _jets.reset(new H1(20, 0, 20));
     _jet_flavor.reset(new H1(10, 0, 10));
     _jet_e.reset(new H1(100, 100, 300));
-    _jet_px.reset(new H1(50, 50, 150));
-    _jet_py.reset(new H1(50, 50, 150));
-    _jet_pz.reset(new H1(50, 50, 150));
-    _jet_x.reset(new H1(50, 50, 150));
-    _jet_y.reset(new H1(50, 50, 150));
-    _jet_z.reset(new H1(50, 50, 150));
+    _jet_px.reset(new H1(100, 0, 100));
+    _jet_py.reset(new H1(100, 0, 100));
+    _jet_pz.reset(new H1(100, 0, 100));
+    _jet_x.reset(new H1(20, 0, 20));
+    _jet_y.reset(new H1(20, 0, 20));
+    _jet_z.reset(new H1(20, 0, 20));
 
     _muons.reset(new H1(20, 0, 20));
     _muon_e.reset(new H1(100, 100, 300));
     _muon_px.reset(new H1(50, 50, 150));
     _muon_py.reset(new H1(50, 50, 150));
     _muon_pz.reset(new H1(50, 50, 150));
-    _muon_x.reset(new H1(50, 50, 150));
-    _muon_y.reset(new H1(50, 50, 150));
-    _muon_z.reset(new H1(50, 50, 150));
+    _muon_x.reset(new H1(20, -10, 10));
+    _muon_y.reset(new H1(20, -10, 10));
+    _muon_z.reset(new H1(20, -10, 10));
 }
 
 pb::Results::~Results()
