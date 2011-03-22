@@ -11,7 +11,8 @@
 #include <TTree.h>
 #include <TSystem.h>
 
-#include "interface/RTEvent.h"
+#include "interface/RTJet.h"
+#include "interface/RTLepton.h"
 #include "interface/RTWriter.h"
 
 using namespace std;
@@ -30,9 +31,12 @@ Writer::Writer(const fs::path &output_file):
     }
 
     _tree.reset(new TTree("rt", "ROOT Tree"));
-    _event.reset(new Event());
 
-    _tree->Branch("event", _event.get());
+    _jets.reset(new Jets());
+    _muons.reset(new Leptons());
+
+    _tree->Branch("jets", _jets.get());
+    _tree->Branch("muons", _muons.get());
 }
 
 Writer::~Writer()
@@ -40,12 +44,13 @@ Writer::~Writer()
     _output->Write();
 }
 
-bool Writer::write(const Event &event)
+bool Writer::write(const Jets &jets, const Leptons &muons)
 {
     if (!_output)
         return false;
 
-    *_event = event;
+    *_jets = jets;
+    *_muons = muons;
 
     _tree->Fill();
 

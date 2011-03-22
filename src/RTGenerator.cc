@@ -31,10 +31,9 @@ void rt::Generator::generateEvents(const uint32_t &events,
 
     for(uint32_t i = 0; events > i; ++i)
     {
-        Event event;
-
         // Generate Jets
         //
+        Event::Jets jet_collection;
         for(uint32_t j = 0; jets > j; ++j)
         {
             rt::Jet jet;
@@ -52,11 +51,12 @@ void rt::Generator::generateEvents(const uint32_t &events,
                             _randomizer->Uniform(Jet::UNKNOWN,
                             Jet::T))));
 
-            event.addJet(jet);
+            jet_collection.push_back(jet);
         }
 
         // Generate Muons
         //
+        Event::Leptons muon_collection;
         for(uint32_t m = 0; muons > m; ++m)
         {
             rt::Lepton muon;
@@ -70,10 +70,10 @@ void rt::Generator::generateEvents(const uint32_t &events,
                                     _randomizer->Gaus(5, 5),
                                     _randomizer->Gaus(4, 5)));
 
-            event.addMuon(muon);
+            muon_collection.push_back(muon);
         }
 
-        _writer->write(event);
+        _writer->write(jet_collection, muon_collection);
     }
 
     _writer.reset();

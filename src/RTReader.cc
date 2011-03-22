@@ -40,8 +40,13 @@ Reader::Reader(const fs::path &input_file):
         _input.reset();
     }
 
-    _event = 0;
-    _tree->SetBranchAddress("event", &_event);
+    _jets = 0;
+    _tree->SetBranchAddress("jets", &_jets);
+
+    _muons = 0;
+    _tree->SetBranchStatus("muons", 0);
+    //_tree->SetBranchAddress("muons", &_muons);
+
     _events_in_tree = _tree->GetEntries();
 }
 
@@ -59,7 +64,7 @@ uint32_t Reader::eventsRead() const
     return _events_read;
 }
 
-bool Reader::read(Event *&event)
+bool Reader::read(Jets *&jets, Leptons *&muons)
 {
     if (!good())
         return false;
@@ -71,7 +76,8 @@ bool Reader::read(Event *&event)
         return false;
     }
 
-    event = _event;
+    jets = _jets;
+    muons = _muons;
 
     ++_events_read;
 

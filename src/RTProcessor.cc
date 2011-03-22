@@ -30,44 +30,49 @@ void rt::Processor::processEvents()
     if (!_reader)
         return;
 
-    Event *event = 0;
+    Event::Jets *jets = 0;
+    Event::Leptons *muons = 0;
 
     while(_reader->good())
     {
-        if (!_reader->read(event) ||
-            !event)
-
+        if (!_reader->read(jets, muons))
             continue;
 
-        _results->jets()->Fill(event->jets().size());
-
-        for(Event::Jets::const_iterator jet = event->jets().begin();
-            event->jets().end() != jet;
-            ++jet)
+        if (jets)
         {
-            _results->jet_flavor()->Fill(jet->flavor());
-            _results->jet_e()->Fill(jet->p4().E());
-            _results->jet_px()->Fill(jet->p4().Px());
-            _results->jet_py()->Fill(jet->p4().Py());
-            _results->jet_pz()->Fill(jet->p4().Pz());
-            _results->jet_x()->Fill(jet->vertex().x());
-            _results->jet_y()->Fill(jet->vertex().y());
-            _results->jet_z()->Fill(jet->vertex().z());
+            _results->jets()->Fill(jets->size());
+
+            for(Event::Jets::const_iterator jet = jets->begin();
+                jets->end() != jet;
+                ++jet)
+            {
+                _results->jet_flavor()->Fill(jet->flavor());
+                _results->jet_e()->Fill(jet->p4().E());
+                _results->jet_px()->Fill(jet->p4().Px());
+                _results->jet_py()->Fill(jet->p4().Py());
+                _results->jet_pz()->Fill(jet->p4().Pz());
+                _results->jet_x()->Fill(jet->vertex().x());
+                _results->jet_y()->Fill(jet->vertex().y());
+                _results->jet_z()->Fill(jet->vertex().z());
+            }
         }
 
-        _results->muons()->Fill(event->muons().size());
-
-        for(Event::Leptons::const_iterator muon = event->muons().begin();
-            event->muons().end() != muon;
-            ++muon)
+        if (muons)
         {
-            _results->muon_e()->Fill(muon->p4().E());
-            _results->muon_px()->Fill(muon->p4().Px());
-            _results->muon_py()->Fill(muon->p4().Py());
-            _results->muon_pz()->Fill(muon->p4().Pz());
-            _results->muon_x()->Fill(muon->vertex().x());
-            _results->muon_y()->Fill(muon->vertex().y());
-            _results->muon_z()->Fill(muon->vertex().z());
+            _results->muons()->Fill(muons->size());
+
+            for(Event::Leptons::const_iterator muon = muons->begin();
+                muons->end() != muon;
+                ++muon)
+            {
+                _results->muon_e()->Fill(muon->p4().E());
+                _results->muon_px()->Fill(muon->p4().Px());
+                _results->muon_py()->Fill(muon->p4().Py());
+                _results->muon_pz()->Fill(muon->p4().Pz());
+                _results->muon_x()->Fill(muon->vertex().x());
+                _results->muon_y()->Fill(muon->vertex().y());
+                _results->muon_z()->Fill(muon->vertex().z());
+            }
         }
     }
 

@@ -11,6 +11,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "interface/RTEvent.h"
+
 namespace fs = boost::filesystem;
 
 class TFile;
@@ -18,25 +20,27 @@ class TTree;
 
 namespace rt
 {
-    class Event;
-
     class Reader
     {
         public:
+            typedef Event::Jets Jets;
+            typedef Event::Leptons Leptons;
+
             Reader(const fs::path &input_file);
             ~Reader();
 
             bool good() const;
             uint32_t eventsRead() const;
 
-            bool read(Event * &);
+            bool read(Jets * &, Leptons * &);
 
         private:
             typedef boost::shared_ptr<TFile> TFilePtr;
 
             TFilePtr _input;
             TTree *_tree;
-            Event *_event;
+            Jets *_jets;
+            Leptons *_muons;
 
             bool _is_good;
             uint32_t _events_in_tree;
