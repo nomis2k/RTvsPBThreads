@@ -18,7 +18,7 @@ PROTOCOBJS = $(subst ./message/,./obj/,$(patsubst %.proto,%.o,$(PROTOCS)))
 
 CINTS      = $(foreach dic,$(addprefix ./dic/,$(patsubst %.h,%.cxx,$(notdir $(DICS)))),$(subst LinkDef,Dict,$(dic)))
 CINTOBJS   = $(foreach obj,$(subst ./dic/,,$(patsubst %.cxx,%.o,$(CINTS))),$(addprefix ./obj/,$(obj)))
-CINTHEADS  = interface/RTEvent.h interface/RTJet.h
+CINTHEADS  = interface/RTEvent.h interface/RTJet.h interface/RTLepton.h
 
 # List of programs with main functions to be filtered out of objects
 PROGS    = $(patsubst ./src/%.cpp,%,$(wildcard ./src/*.cpp))
@@ -93,7 +93,7 @@ lib: $(LIB)
 
 $(LIB): $(CINTOBJS) $(OBJS)
 	@echo "[+] Generating Library ..."
-	$(CCC) $(LDFLAGS) -o $(addprefix ./lib/,$@) $(CINTOBJS) obj/RTEvent.o obj/RTJet.o
+	$(CCC) $(LDFLAGS) -o $(addprefix ./lib/,$@) $(CINTOBJS) obj/RTEvent.o obj/RTJet.o obj/RTLepton.o
 	@echo
 
 

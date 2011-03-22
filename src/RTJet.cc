@@ -9,7 +9,8 @@
 
 using rt::Jet;
 
-Jet::Jet()
+Jet::Jet():
+    _flavor(UNKNOWN)
 {
 }
 
@@ -18,7 +19,27 @@ const TLorentzVector &Jet::p4() const
     return _p4;
 }
 
+const TVector3 &Jet::vertex() const
+{
+    return _vertex;
+}
+
+const Jet::Flavor &Jet::flavor() const
+{
+    return _flavor;
+}
+
 void Jet::setP4(const TLorentzVector &p4)
 {
     _p4 = p4;
+}
+
+void Jet::setVertex(const TVector3 &vertex)
+{
+    _vertex = vertex;
+}
+
+void Jet::setFlavor(const Flavor &flavor)
+{
+    _flavor = flavor;
 }

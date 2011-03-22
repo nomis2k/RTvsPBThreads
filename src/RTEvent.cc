@@ -20,7 +20,17 @@ const Event::Jets &Event::jets() const
     return _jets;
 }
 
+const Event::Leptons &Event::leptons() const
+{
+    return _leptons;
+}
+
 void Event::addJet(const Jet &jet)
 {
     _jets.push_back(jet);
+}
+
+void Event::addLepton(const Lepton &lepton)
+{
+    _leptons.push_back(lepton);
 }

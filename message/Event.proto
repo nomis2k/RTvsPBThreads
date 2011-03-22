@@ -11,12 +11,41 @@ message LorentzVector
     required double pz = 4;
 }
 
+message Vertex
+{
+    required double x = 1;
+    required double y = 2;
+    required double z = 3;
+}
+
 message Jet
 {
+    enum Flavor
+    {
+        UNKNOWN = 0;
+        D = 1;
+        U = 2;
+        S = 3;
+        C = 4;
+        B = 5;
+        T = 6;
+    }
+
     required LorentzVector p4 = 1;
+    required Vertex vertex = 2;
+
+    optional Flavor flavor = 3 [default = UNKNOWN];
+}
+
+message Lepton
+{
+    required LorentzVector p4 = 1;
+    required Vertex vertex = 2;
 }
 
 message Event
 {
     repeated Jet jets = 1;
+    repeated Lepton muons = 2;
+    repeated Lepton electrons = 3;
 }

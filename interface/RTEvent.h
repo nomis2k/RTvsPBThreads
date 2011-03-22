@@ -13,6 +13,7 @@
 #include <TObject.h>
 
 #include "interface/RTJet.h"
+#include "interface/RTLepton.h"
 
 namespace rt
 {
@@ -20,16 +21,20 @@ namespace rt
     {
         public:
             typedef std::vector<Jet> Jets;
+            typedef std::vector<Lepton> Leptons;
 
             Event();
             virtual ~Event() {}
 
             const Jets &jets() const;
+            const Leptons &leptons() const;
 
             void addJet(const Jet &);
+            void addLepton(const Lepton &);
 
         private:
             Jets _jets;
+            Leptons _leptons;
 
         ClassDef(Event, 1);
     };
