@@ -22,7 +22,9 @@ void rt::Generator::init(const fs::path &file)
     _writer.reset(new Writer(file));
 }
 
-void rt::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
+void rt::Generator::generateEvents(const uint32_t &events,
+                                   const uint32_t &jets,
+                                   const uint32_t &muons)
 {
     if (!_writer)
         return;
@@ -37,12 +39,38 @@ void rt::Generator::generateEvents(const uint32_t &events, const uint32_t &jets)
         {
             rt::Jet jet;
 
-            jet.setP4(TLorentzVector(_randomizer->Gaus(100, 10),
-                                     _randomizer->Gaus(100, 10),
-                                     _randomizer->Gaus(100, 10),
-                                     _randomizer->Gaus(200, 10)));
+            jet.setP4(TLorentzVector(_randomizer->Gaus(80, 15),
+                                     _randomizer->Gaus(80, 15),
+                                     _randomizer->Gaus(80, 15),
+                                     _randomizer->Gaus(4, 2)));
+
+            jet.setVertex(TVector3(_randomizer->Gaus(1, 10),
+                                   _randomizer->Gaus(2, 10),
+                                   _randomizer->Gaus(3, 10)));
+
+            jet.setFlavor(Jet::Flavor(static_cast<int>(
+                            _randomizer->Uniform(Jet::UNKNOWN,
+                            Jet::T))));
 
             event.addJet(jet);
+        }
+
+        // Generate Muons
+        //
+        for(uint32_t m = 0; muons > m; ++m)
+        {
+            rt::Lepton muon;
+
+            muon.setP4(TLorentzVector(_randomizer->Gaus(50, 5),
+                                      _randomizer->Gaus(50, 5),
+                                      _randomizer->Gaus(50, 5),
+                                      _randomizer->Gaus(105, 2)));
+
+            muon.setVertex(TVector3(_randomizer->Gaus(6, 5),
+                                    _randomizer->Gaus(5, 5),
+                                    _randomizer->Gaus(4, 5)));
+
+            event.addMuon(muon);
         }
 
         _writer->write(event);

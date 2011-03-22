@@ -14,6 +14,7 @@
 
 #include "interface/PBGenerator.h"
 #include "interface/RTGenerator.h"
+#include "pb/Event.pb.h"
 
 using namespace std;
 
@@ -29,6 +30,11 @@ uint32_t MAX_JETS = 10;
 int main(int argc, char *argv[])
 try
 {
+    // Verify that the version of the library that we linked against is
+    // compatible with the version of the headers we compiled against
+    //
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
+
     if (2 > argc)
     {
         printUsage(argv[0]);
@@ -80,14 +86,28 @@ try
     {
         cerr << "error: " << error.what() << endl;
 
+        // Clean Up any memory allocated by libprotobuf
+        //
+        google::protobuf::ShutdownProtobufLibrary();
+
         return 1;
     }
+
+    // Clean Up any memory allocated by libprotobuf
+    //
+    google::protobuf::ShutdownProtobufLibrary();
 
     return 0;
 }
 catch(...)
 {
+    // Clean Up any memory allocated by libprotobuf
+    //
+    google::protobuf::ShutdownProtobufLibrary();
+
     cerr << "Unknown error" << endl;
+
+    return 1;
 }
 
 void printUsage(const string &executable)

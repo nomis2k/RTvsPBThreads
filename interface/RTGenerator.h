@@ -25,7 +25,8 @@ namespace rt
 
             virtual void init(const fs::path &file);
             virtual void generateEvents(const uint32_t &events,
-                                        const uint32_t &jets);
+                                        const uint32_t &jets,
+                                        const uint32_t &muons);
 
         private:
             boost::shared_ptr<TRandom> _randomizer;

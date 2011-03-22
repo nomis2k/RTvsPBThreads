@@ -27,14 +27,14 @@ namespace rt
             virtual ~Event() {}
 
             const Jets &jets() const;
-            const Leptons &leptons() const;
+            const Leptons &muons() const;
 
             void addJet(const Jet &);
-            void addLepton(const Lepton &);
+            void addMuon(const Lepton &);
 
         private:
             Jets _jets;
-            Leptons _leptons;
+            Leptons _muons;
 
         ClassDef(Event, 1);
     };

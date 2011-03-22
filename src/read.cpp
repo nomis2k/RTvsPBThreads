@@ -17,6 +17,7 @@
 #include "interface/PBProcessor.h"
 #include "interface/RTProcessor.h"
 #include "interface/Results.h"
+#include "pb/Event.pb.h"
 
 using namespace std;
 
@@ -30,6 +31,11 @@ int THREADS = 0;
 int main(int argc, char *argv[])
 try
 {
+    // Verify that the version of the library that we linked against is
+    // compatible with the version of the headers we compiled against
+    //
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
+
     po::options_description description("Allowed options");
     description.add_options()
         ("help", "produce help message")
@@ -152,12 +158,26 @@ try
     {
         cerr << "error: " << error.what() << endl;
 
+        // Clean Up any memory allocated by libprotobuf
+        //
+        google::protobuf::ShutdownProtobufLibrary();
+
         return 1;
     }
+
+    // Clean Up any memory allocated by libprotobuf
+    //
+    google::protobuf::ShutdownProtobufLibrary();
 
     return 0;
 }
 catch(...)
 {
+    // Clean Up any memory allocated by libprotobuf
+    //
+    google::protobuf::ShutdownProtobufLibrary();
+
     cerr << "Unknown error" << endl;
+
+    return 1;
 }
