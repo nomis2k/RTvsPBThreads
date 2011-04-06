@@ -39,11 +39,14 @@ void rt::Processor::processEvents()
 
             continue;
 
-        _results->jets()->Fill(event->jets().size());
+        _results->jets()->Fill(event->jets().GetEntries());
 
-        for(Event::Jets::const_iterator jet = event->jets().begin();
-            event->jets().end() != jet;
-            ++jet)
+        // for(Event::Jets::const_iterator jet = event->jets().begin();
+        //     event->jets().end() != jet;
+        //     ++jet)
+        TIter next( & event->jets() );
+        rt::Jet *jet;
+        while ( jet = (rt::Jet*)next() )
         {
             _results->jet_flavor()->Fill(jet->flavor());
             _results->jet_e()->Fill(jet->p4().E());
@@ -55,11 +58,14 @@ void rt::Processor::processEvents()
             _results->jet_z()->Fill(jet->vertex().z());
         }
 
-        _results->muons()->Fill(event->muons().size());
+        _results->muons()->Fill(event->muons().GetEntries());
 
-        for(Event::Leptons::const_iterator muon = event->muons().begin();
-            event->muons().end() != muon;
-            ++muon)
+        // for(Event::Leptons::const_iterator muon = event->muons().begin();
+        //     event->muons().end() != muon;
+        //     ++muon)
+        TIter next2( & event->muons() );
+        rt::Lepton *muon;
+        while ( muon = (rt::Lepton*)next() )
         {
             _results->muon_e()->Fill(muon->p4().E());
             _results->muon_px()->Fill(muon->p4().Px());
