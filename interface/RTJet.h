@@ -13,7 +13,7 @@
 
 namespace rt
 {
-    class Jet
+   class Jet : public TObject
     {
         public:
             enum Flavor
@@ -29,6 +29,9 @@ namespace rt
 
             Jet();
 
+            TLorentzVector *mutable_p4() { return &_p4; }
+            TVector3 *mutable_vertex()  { return &_vertex; }
+
             const TLorentzVector &p4() const;
             const TVector3 &vertex() const;
             const Flavor &flavor() const;
@@ -41,6 +44,8 @@ namespace rt
             TLorentzVector _p4;
             TVector3 _vertex;
             Flavor _flavor;
+
+            ClassDef(Jet,1);
     };
 }
 
