@@ -23,15 +23,18 @@ namespace rt
     class Writer
     {
         public:
+            typedef boost::shared_ptr<Event> EventPtr;
+
             Writer(const fs::path &output_file);
             ~Writer();
 
-            bool write(const Event &);
+            bool write();
+
+            EventPtr event() const;
 
         private:
             typedef boost::shared_ptr<TFile> TFilePtr;
             typedef boost::shared_ptr<TTree> TTreePtr;
-            typedef boost::shared_ptr<Event> EventPtr;
 
             TFilePtr _output;
             TTreePtr _tree;

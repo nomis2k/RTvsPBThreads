@@ -29,6 +29,7 @@ Writer::Writer(const fs::path &output_file):
         _output.reset();
     }
 
+    _output->SetCompressionLevel(0);
     _tree.reset(new TTree("rt", "ROOT Tree"));
     _event.reset(new Event());
 
@@ -40,16 +41,19 @@ Writer::~Writer()
     _output->Write();
 }
 
-bool Writer::write(const Event &event)
+bool Writer::write()
 {
     if (!_output)
         return false;
-
-    *_event = event;
 
     _tree->Fill();
 
     ++_events_written;
 
     return true;
+}
+
+Writer::EventPtr Writer::event() const
+{
+    return _event;
 }
