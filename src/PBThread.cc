@@ -60,8 +60,6 @@ void pb::Thread::init(const fs::path &file)
     _processor->init(file);
     _continue = true;
     _wait_for_instructions = false;
-
-    _out->print(_thread_id, file.string());
 }
 
 uint32_t pb::Thread::eventsRead() const
