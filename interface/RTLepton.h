@@ -13,20 +13,24 @@
 
 namespace rt
 {
-    class Lepton
+   class Lepton : public TObject
     {
         public:
             Lepton();
 
             const TLorentzVector &p4() const;
             const TVector3 &vertex() const;
-
+            
+            TLorentzVector *mutable_p4() { return &_p4; }
+            TVector3 *mutable_vertex() { return &_vertex; }
+            
             void setP4(const TLorentzVector &);
             void setVertex(const TVector3 &);
 
         private:
             TLorentzVector _p4;
             TVector3 _vertex;
+            ClassDef(Lepton,1);
     };
 }
 

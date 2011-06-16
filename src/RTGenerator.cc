@@ -29,51 +29,58 @@ void rt::Generator::generateEvents(const uint32_t &events,
     if (!_writer)
         return;
 
+    Writer::EventPtr event = _writer->event();;
+    event->Clear();
+
     for(uint32_t i = 0; events > i; ++i)
     {
-        Event event;
-
         // Generate Jets
         //
         for(uint32_t j = 0; jets > j; ++j)
         {
-            rt::Jet jet;
+           rt::Jet *jet = event->add_jets();
+           TLorentzVector *p4 = jet->mutable_p4();
 
-            jet.setP4(TLorentzVector(_randomizer->Gaus(80, 15),
-                                     _randomizer->Gaus(80, 15),
-                                     _randomizer->Gaus(80, 15),
-                                     _randomizer->Gaus(4, 2)));
+           p4->SetE(_randomizer->Gaus(172, 10));
+           p4->SetPx(_randomizer->Gaus(45, 5));
+           p4->SetPy(_randomizer->Gaus(45, 5));
+           p4->SetPz(_randomizer->Gaus(45, 5));
 
-            jet.setVertex(TVector3(_randomizer->Gaus(1, 10),
-                                   _randomizer->Gaus(2, 10),
-                                   _randomizer->Gaus(3, 10)));
+           TVector3 *vertex = jet->mutable_vertex();
+           
+           vertex->SetX(_randomizer->Gaus(6, 1));
+           vertex->SetY(_randomizer->Gaus(7, 1));
+           vertex->SetZ(_randomizer->Gaus(8, 1));
 
-            jet.setFlavor(Jet::Flavor(static_cast<int>(
+          jet->setFlavor(Jet::Flavor(static_cast<int>(
                             _randomizer->Uniform(Jet::UNKNOWN,
                             Jet::T))));
 
-            event.addJet(jet);
         }
 
         // Generate Muons
         //
         for(uint32_t m = 0; muons > m; ++m)
         {
-            rt::Lepton muon;
+           rt::Lepton * muon = event->add_muons();
 
-            muon.setP4(TLorentzVector(_randomizer->Gaus(50, 5),
-                                      _randomizer->Gaus(50, 5),
-                                      _randomizer->Gaus(50, 5),
-                                      _randomizer->Gaus(105, 2)));
+             TLorentzVector *p4 = muon->mutable_p4();
 
-            muon.setVertex(TVector3(_randomizer->Gaus(6, 5),
-                                    _randomizer->Gaus(5, 5),
-                                    _randomizer->Gaus(4, 5)));
+            p4->SetE(_randomizer->Gaus(200,10));
+            p4->SetPx(_randomizer->Gaus(100,10));
+            p4->SetPy(_randomizer->Gaus(100,10));
+            p4->SetPz(_randomizer->Gaus(100,10));
 
-            event.addMuon(muon);
+            TVector3 *vertex = muon->mutable_vertex();
+
+            vertex->SetX(_randomizer->Gaus(1, 1));
+            vertex->SetY(_randomizer->Gaus(2, 1));
+            vertex->SetZ(_randomizer->Gaus(3, 1));
         }
 
-        _writer->write(event);
+        _writer->write();
+
+        event->Clear();
     }
 
     _writer.reset();

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <TObject.h>
+#include "TClonesArray.h"
 
 #include "interface/RTJet.h"
 #include "interface/RTLepton.h"
@@ -20,8 +21,8 @@ namespace rt
     class Event : public TObject
     {
         public:
-            typedef std::vector<Jet> Jets;
-            typedef std::vector<Lepton> Leptons;
+            typedef TClonesArray Jets;
+            typedef TClonesArray Leptons;
 
             Event();
             virtual ~Event() {}
@@ -29,8 +30,18 @@ namespace rt
             const Jets &jets() const;
             const Leptons &muons() const;
 
-            void addJet(const Jet &);
-            void addMuon(const Lepton &);
+            Jet *add_jets() {
+               return new (_jets[_jets.GetEntriesFast()]) Jet();
+            }
+
+            Lepton * add_muons() {
+               return new (_muons[_jets.GetEntriesFast()]) Lepton();
+            }
+            
+            void Clear() {
+               _jets.Clear();
+               _muons.Clear();
+            }
 
         private:
             Jets _jets;

@@ -11,7 +11,7 @@ using rt::Event;
 
 ClassImp(Event)
 
-Event::Event()
+Event::Event() : _jets("rt::Jet"),_muons("rt::Lepton")
 {
 }
 
@@ -25,12 +25,12 @@ const Event::Leptons &Event::muons() const
     return _muons;
 }
 
-void Event::addJet(const Jet &jet)
-{
-    _jets.push_back(jet);
-}
+// void Event::addJet(const Jet &jet)
+// {
+//     _jets.push_back(jet);
+// }
 
-void Event::addMuon(const Lepton &lepton)
-{
-    _muons.push_back(lepton);
-}
+// void Event::addMuon(const Lepton &lepton)
+// {
+//     _muons.push_back(lepton);
+// }
