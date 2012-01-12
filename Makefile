@@ -30,8 +30,10 @@ else
 	DEBUG = -O0 -g
 endif
 
-CXXFLAGS = ${DEBUG} -pipe -Wall -I./  -I/opt/local/include/ -I${BOOST_ROOT}/include -I${ROOTSYS}/include
-LIBS     = -L/opt/local/lib -lprotobuf -lboost_filesystem -lboost_system -lboost_thread-mt -lboost_program_options
+#CXXFLAGS = ${DEBUG} -pipe -Wall -I./  -I/opt/local/include/ -I/uscms/home/samvel/Applications/opt/local/include -I${BOOST_ROOT}/include -I${ROOTSYS}/include
+CXXFLAGS = ${DEBUG} -fPIC -pipe -Wall -I./  -I${HOME}/Applications/protobuf/include/ -I${BOOST_ROOT}/include -I${ROOTSYS}/include
+#LIBS     = -L/opt/local/lib -L/uscms/home/samvel/Applications/opt/local/lib -lprotobuf -L${BOOST_ROOT}/lib -lboost_filesystem -lboost_system -lboost_thread -lboost_program_options
+LIBS     = -L${HOME}/Applications/protobuf/lib -lprotobuf -L${BOOST_ROOT}/lib -lboost_filesystem -lboost_system -lboost_thread -lboost_program_options
 LDFLAGS  = -shared -W1 `root-config --libs`
 
 # Rules to be always executed: empty ones
